@@ -2,22 +2,23 @@ require_relative "./aoc"
 
 class Day1 < AOC
   def solve(part:)
-    data = lazy_load_data.map(&:to_i)
-    if part == 1
-      count(data)
+    elves = convert(lazy_load_data)
+      .map { |elf| elf.reject { |line| line == "\n" }
+      .map { |line| line.gsub("\n", "") }
+      .map(&:to_i) }
+    calories = elves.map(&:sum).force
+    
+    case part
+    when 1
+      calories.max
     else
-      data
-        .each_cons(3)
-        .map(&:sum)
-        .then { |data| count(data) }
+      calories.max(3).sum
     end
   end
 
-  def count(data)
-    data
-      .each_cons(2)
-      .filter { |source, target|  source < target}
-      .force
-      .length
+  private
+
+  def convert(data)
+    elves = data.slice_when { |line| line == "\n" }
   end
 end
