@@ -35,7 +35,7 @@ class Day3 < AOC
   end
 
   def compute_item_priority(letter)
-    letter_priorities = [*"a".."z", *"A".."Z"].each_with_index.map { |letter, index| [letter, index + 1] }.to_h
+    letter_priorities = [("a".."z").to_a, ("A".."Z").to_a].flatten.map.with_index { |letter, index| [letter, index + 1] }.to_h
     letter_priorities[letter]
   end
 
