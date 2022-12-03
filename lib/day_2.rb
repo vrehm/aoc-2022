@@ -10,7 +10,7 @@ class Day2 < AOC
     "B Z": 9, # P S => 3 + 6
     "C X": 7, # S R => 1 + 6
     "C Y": 2, # S P => 2 + 0
-    "C Z": 6, # S S => 3 + 3
+    "C Z": 6 # S S => 3 + 3
   }
 
   SCORING2 = {
@@ -22,7 +22,7 @@ class Day2 < AOC
     "B Z": 9, # S => 3 + 6
     "C X": 2, # P => 2 + 0
     "C Y": 6, # S => 3 + 3
-    "C Z": 7, # R => 1 + 6
+    "C Z": 7 # R => 1 + 6
   }
 
   def solve(part:)

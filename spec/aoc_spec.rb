@@ -1,5 +1,5 @@
 RSpec.describe AOC do
-  subject(:day) { described_class.new(input_file: double()) }
+  subject(:day) { described_class.new(input_file: double) }
 
   describe "#convert_list_of_string_into_list_of_integers" do
     it "converts a list of strings into a list of integers" do

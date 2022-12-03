@@ -13,7 +13,7 @@ class AOC
 
   def break_list_on(data, divider)
     data
-      .chunk_while { |first, second| first !=  divider && second != divider }
+      .chunk_while { |first, second| first != divider && second != divider }
       .filter { |group| group != [divider] }
   end
 
