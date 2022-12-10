@@ -32,6 +32,6 @@ class Day2 < AOC
   end
 
   def mark_scoring(round, scoring = 1)
-    scoring == 1 ? SCORING1[round.to_sym] : SCORING2[round.to_sym]
+    (scoring == 1) ? SCORING1[round.to_sym] : SCORING2[round.to_sym]
   end
 end

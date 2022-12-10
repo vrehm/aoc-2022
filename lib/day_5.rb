@@ -1,60 +1,56 @@
-require_relative "./aoc"
-
 class Day5 < AOC
   def solve(part:)
-    input = File.open("data/day5.txt").read
-    # get the initial stacks and instructions
+    initial, instruction = input_parts.values
+    stacks = stacks(initial)
+    instructions = instructions(instruction)
+    move(stacks, instructions, part)
+    stacks.values.map(&:first).join
+  end
 
-    i_stacks = input.split(/\n\n/).first
-    instructions = input.split(/\n\n/).last
+  def input_parts
+    initial, _blank_line, instruction = read_input_file.slice_when { |first, second| [first, second].include?("") }.to_a
+    {
+      initial: initial,
+      instruction: instruction
+    }
+  end
 
-    # beautify instructions
-    instructions = instructions.split(/\n/).map do |text|
-      first_number = text.match(/e \d+/)[0].gsub("e ", "").to_i
-      second_number = text.match(/\d t/)[0].gsub(" t", "").to_i
-      third_number = text.match(/o \d/)[0].gsub("o ", "").to_i
-      [first_number, second_number, third_number]
-    end
-
-    instructions = instructions.map do |i|
-      {quantity: i.first.to_i, o_stack: i[1].to_i, e_stack: i.last.to_i}
-    end
-
-    # beautify stacks
-    rows = i_stacks.split(/\n/)
-    rows.delete_at(-1)
-
-    rows = rows.map do |row|
-      final_row = []
-      characters = row.split("")
-      characters.each_slice(4) {|slice| final_row << slice}
-      final_row.map { |column| column.join.gsub(/[\[\] ]/, "")  }
-    end
-
-    rows = rows.transpose.map(&:reverse)
-    rows.each {|row| row.delete("")}
-
-    stacks = {}
-    rows.each_with_index do |row, index|
-      stacks[index+1] = row
-    end
-
-    # do the moving
-
-    instructions.each do |ins|
-      range = ((-(ins[:quantity]))..-1)
-      case part
-      when 1
-        # remove .reverse for the second part
-        to_add = stacks[ins[:o_stack]].slice!(range).reverse
-      else
-        to_add = stacks[ins[:o_stack]].slice!(range)
+  def instructions(instruction)
+    instruction
+      .map do |move|
+        /move (?<move>\d+) from (?<from>\d) to (?<to>\d)/
+          .match(move)
+          .named_captures
+          .transform_keys(&:to_sym)
+          .transform_values(&:to_i)
       end
-      destination = stacks[ins[:e_stack]]
-      destination.push(to_add).flatten!
-    end
+  end
 
-    result = stacks.map { |k,v| v.last  }.join
-    p result
+  def stacks(initial_position)
+    stacks = initial_position[-1]
+      .split
+      .map { |number| [number.to_i, []] }
+      .to_h
+
+    initial_position[0..-2]
+      .map { |line| (0..(stacks.size - 1)).map { |n| line[1 + 4 * n] }.join }
+      .each do |line|
+        line.chars.each.with_index { |char, index| stacks[index + 1].push(char) if char != " " }
+      end
+    stacks
+  end
+
+  def move(stacks, instructions, part = 1)
+    instructions.each do |instruction|
+      origin = stacks[instruction[:from]]
+      crates = origin.shift(instruction[:move])
+      destination = stacks[instruction[:to]]
+      if part == 1
+        destination.unshift(*crates.reverse)
+      else
+        destination.unshift(*crates)
+      end
+    end
+    stacks
   end
 end

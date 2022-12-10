@@ -41,7 +41,6 @@ class Day4 < AOC
       end
     end
   end
-
 end
 
 class Range
