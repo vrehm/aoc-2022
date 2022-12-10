@@ -19,7 +19,7 @@ RSpec.describe Day9 do
     end
 
     it "moves H to the left twice" do
-      rope = [{x: 0, y: 0} , {x: -1, y: 0}]
+      rope = [{x: 0, y: 0}, {x: -1, y: 0}]
       movements = [:left, :left]
       ropes = day.make_moves([rope], movements)
       expect(ropes).to eq([

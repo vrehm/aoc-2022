@@ -1,5 +1,3 @@
-require "day_8"
-
 RSpec.describe Day8 do
   subject { day.solve(part: part) }
 
@@ -75,17 +73,17 @@ RSpec.describe Day8 do
       target1 = {x: 3, y: 3, value: 3}
       target2 = {x: 0, y: 0, value: 3}
       target3 = {x: 1, y: 0, value: 0}
-      target4 = {x: 2, y: 0, value: 3}
-      target5 = {x: 3, y: 0, value: 7}
-      target6 = {x: 4, y: 0, value: 3}
-      target7 = {x: 4, y: 1, value: 2}
-      target8 = {x: 4, y: 2, value: 2}
-      target9 = {x: 4, y: 3, value: 9}
-      target10 = {x: 4, y: 4, value: 0}
-      target11 = {x: 3, y: 4, value: 9}
-      target12 = {x: 2, y: 4, value: 3}
-      target13 = {x: 1, y: 4, value: 5}
-      target14 = {x: 0, y: 4, value: 3}
+      # target4 = {x: 2, y: 0, value: 3}
+      # target5 = {x: 3, y: 0, value: 7}
+      # target6 = {x: 4, y: 0, value: 3}
+      # target7 = {x: 4, y: 1, value: 2}
+      # target8 = {x: 4, y: 2, value: 2}
+      # target9 = {x: 4, y: 3, value: 9}
+      # target10 = {x: 4, y: 4, value: 0}
+      # target11 = {x: 3, y: 4, value: 9}
+      # target12 = {x: 2, y: 4, value: 3}
+      # target13 = {x: 1, y: 4, value: 5}
+      # target14 = {x: 0, y: 4, value: 3}
 
       expect(day.at_edge?(data, target1)).to eq(false)
       expect(day.at_edge?(data, target2)).to eq(true)
