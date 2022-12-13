@@ -15,7 +15,6 @@ class Day11
       part = {rounds: 10_000, div: 1}
     end
 
-    
     monkeys = read_input_file.map do |monkey|
       monkey = monkey.split("\n")
 

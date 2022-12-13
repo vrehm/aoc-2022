@@ -10,13 +10,13 @@ RSpec.describe Day12 do
     let(:part) { 1 }
     let(:test_matrix) {
       [
-      [OpenStruct.new({value: "a"}), OpenStruct.new({value: "a"}), OpenStruct.new({value: "b"}), OpenStruct.new({value: "q"}), OpenStruct.new({value: "p"}), OpenStruct.new({value: "o"}), OpenStruct.new({value: "n"}), OpenStruct.new({value: "m"})],
-      [OpenStruct.new({value: "a"}), OpenStruct.new({value: "b"}), OpenStruct.new({value: "c"}), OpenStruct.new({value: "r"}), OpenStruct.new({value: "y"}), OpenStruct.new({value: "x"}), OpenStruct.new({value: "x"}), OpenStruct.new({value: "l"})],
-      [OpenStruct.new({value: "a"}), OpenStruct.new({value: "c"}), OpenStruct.new({value: "c"}), OpenStruct.new({value: "s"}), OpenStruct.new({value: "z"}), OpenStruct.new({value: "z"}), OpenStruct.new({value: "x"}), OpenStruct.new({value: "k"})],
-      [OpenStruct.new({value: "a"}), OpenStruct.new({value: "c"}), OpenStruct.new({value: "c"}), OpenStruct.new({value: "t"}), OpenStruct.new({value: "u"}), OpenStruct.new({value: "v"}), OpenStruct.new({value: "w"}), OpenStruct.new({value: "j"})],
-      [OpenStruct.new({value: "a"}), OpenStruct.new({value: "b"}), OpenStruct.new({value: "d"}), OpenStruct.new({value: "e"}), OpenStruct.new({value: "f"}), OpenStruct.new({value: "g"}), OpenStruct.new({value: "h"}), OpenStruct.new({value: "i"})]
-    ]
-  }
+        [OpenStruct.new({value: "a"}), OpenStruct.new({value: "a"}), OpenStruct.new({value: "b"}), OpenStruct.new({value: "q"}), OpenStruct.new({value: "p"}), OpenStruct.new({value: "o"}), OpenStruct.new({value: "n"}), OpenStruct.new({value: "m"})],
+        [OpenStruct.new({value: "a"}), OpenStruct.new({value: "b"}), OpenStruct.new({value: "c"}), OpenStruct.new({value: "r"}), OpenStruct.new({value: "y"}), OpenStruct.new({value: "x"}), OpenStruct.new({value: "x"}), OpenStruct.new({value: "l"})],
+        [OpenStruct.new({value: "a"}), OpenStruct.new({value: "c"}), OpenStruct.new({value: "c"}), OpenStruct.new({value: "s"}), OpenStruct.new({value: "z"}), OpenStruct.new({value: "z"}), OpenStruct.new({value: "x"}), OpenStruct.new({value: "k"})],
+        [OpenStruct.new({value: "a"}), OpenStruct.new({value: "c"}), OpenStruct.new({value: "c"}), OpenStruct.new({value: "t"}), OpenStruct.new({value: "u"}), OpenStruct.new({value: "v"}), OpenStruct.new({value: "w"}), OpenStruct.new({value: "j"})],
+        [OpenStruct.new({value: "a"}), OpenStruct.new({value: "b"}), OpenStruct.new({value: "d"}), OpenStruct.new({value: "e"}), OpenStruct.new({value: "f"}), OpenStruct.new({value: "g"}), OpenStruct.new({value: "h"}), OpenStruct.new({value: "i"})]
+      ]
+    }
 
     it { is_expected.to eq(31) }
 
@@ -88,5 +88,12 @@ RSpec.describe Day12 do
   context "part two" do
     let(:part) { 2 }
     it { is_expected.to eq(29) }
+
+    it "finds all start_locations candidates with 'a' value" do
+      data = ["Sabqponm", "abcryxxl", "accszExk", "acctuvwj", "abdefghi"]
+      grid = day.build_heightmap(data)
+      expected = Set[[0, 0], [1, 0], [0, 1], [0, 2], [0, 3], [0, 4]]
+      expect(day.find_all_starting_points(grid)).to eq(expected)
+    end
   end
 end

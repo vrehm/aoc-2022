@@ -31,16 +31,16 @@ class Day12 < AOC
     s_coordinates = find_coordinates(heightmap, "S")
     s_x, s_y = s_coordinates[0], s_coordinates[1]
     heightmap[s_y][s_x] = "a"
-  
+
     e_coordinates = find_coordinates(heightmap, "E")
     e_x, e_y = e_coordinates[0], e_coordinates[1]
     heightmap[e_y][e_x] = "z"
-    
+
     case part
     when 1
       tiles, matrix = build_tiles(heightmap)
       nodes = tiles.map { |tile| orthogonal_neighbors(matrix, [tile.x, tile.y]).map { |x, y| matrix[y][x] } }
-      tiles_hash = Hash[tiles.zip(nodes)]
+      tiles_hash = tiles.zip(nodes).to_h
 
       start = matrix[s_y][s_x]
       goal = matrix[e_y][e_x]
@@ -49,16 +49,18 @@ class Day12 < AOC
       space.search(start, goal).size - 1
     when 2
       start_locations = find_all_starting_points(heightmap)
-      paths = start_locations.map do |x, y|
+      paths = Set.new
+      start_locations.map do |x, y|
         tiles, matrix = build_tiles(heightmap)
         nodes = tiles.map { |tile| orthogonal_neighbors(matrix, [tile.x, tile.y]).map { |x, y| matrix[y][x] } }
-        tiles_hash = Hash[tiles.zip(nodes)]
-        
+        tiles_hash = tiles.zip(nodes).to_h
+
         start = matrix[y][x]
         goal = matrix[e_y][e_x]
-        
+
         space = Space.new(tiles_hash)
-        space.search(start, goal).size - 1
+        result = space.search(start, goal)
+        paths << result.size - 1 if result
       end
       paths.min
     end
@@ -75,29 +77,7 @@ class Day12 < AOC
         matrix[y_index][x_index] = tile
       end
     end
-    return tiles, matrix
-  end
-
-  def find_next_steps(grid, heads, target, polarity, depth = 1)
-    return if heads.empty?
-
-    next_heads = []
-
-    heads.each do |xh, yh|
-      grid[yh][xh][:seen] = true
-
-      steps = [[xh, yh + 1], [xh, yh - 1], [xh + 1, yh], [xh - 1, yh]]
-        .reject { |x, y| x.negative? || y.negative? }
-        .filter { |x, y| (x < grid.first.size) && (y < grid.size) }
-        .reject { |x, y| grid[y][x][:seen].eql? true }
-        .filter { |x, y| polarity * (grid[y][x][:h] - grid[yh][xh][:h]) < 2 }
-
-      return depth if steps.map { |x, y| grid[y][x][:char] }.include? target
-
-      next_heads += steps
-    end
-
-    find_next_steps(grid, next_heads.uniq, target, polarity, depth + 1)
+    [tiles, matrix]
   end
 
   def build_heightmap(data)
@@ -116,7 +96,7 @@ class Day12 < AOC
     results = Set.new
     grid.each_with_index do |row, y|
       row.each_with_index do |cell, x|
-        results << [x, y] if cell == "a"
+        results << [x, y] if cell == "a" || cell == "S"
       end
     end
     results
