@@ -1,18 +1,56 @@
 class Day12 < AOC
   def solve(part:)
-    case part
-    when 1
-      heightmap = build_heightmap(read_input_file)
-      s_coordinates = find_coordinates(heightmap, "S")
-      heightmap[s_coordinates[1]][s_coordinates[0]] = "a"
-      e_coordinates = find_coordinates(heightmap, "E")
-      heightmap[e_coordinates[1]][e_coordinates[0]] = "z"
-      shortest_path = shortest_path(heightmap, s_coordinates, e_coordinates)
-      shortest_path.size - 1
-    when 2
-      286
+    input = read_input_file
+    
+    [
+      { from: 'S', target: 'E', polarity: 1 },
+      { from: 'E', target: 'a', polarity: -1 }
+    ].each do |part|
+      y = input.find_index { |i| i.include? part[:from] }
+      x = input[y].index(part[:from])
+    
+      grid = input.map do |i|
+        i.chars.map { |j| { char: j, h: j.tr('SE', 'az').ord, seen: false } }
+      end
+    
+      puts find_next_steps(grid, [[x, y]], part[:target], part[:polarity])
     end
+    # case part
+    # when 1
+    #   heightmap = build_heightmap(read_input_file)
+    #   s_coordinates = find_coordinates(heightmap, "S")
+    #   heightmap[s_coordinates[1]][s_coordinates[0]] = "a"
+    #   e_coordinates = find_coordinates(heightmap, "E")
+    #   heightmap[e_coordinates[1]][e_coordinates[0]] = "z"
+    #   shortest_path = shortest_path(heightmap, s_coordinates, e_coordinates)
+    #   shortest_path.size - 1
+    # when 2
+    #   286
+    # end
   end
+
+  def find_next_steps(grid, heads, target, polarity, depth = 1)
+    return if heads.empty?
+  
+    next_heads = []
+  
+    heads.each do |xh, yh|
+      grid[yh][xh][:seen] = true
+  
+      steps = [[xh, yh + 1], [xh, yh - 1], [xh + 1, yh], [xh - 1, yh]]
+              .reject { |x, y| x.negative? || y.negative? }
+              .filter { |x, y| (x < grid.first.size) && (y < grid.size) }
+              .reject { |x, y| grid[y][x][:seen].eql? true }
+              .filter { |x, y| polarity * (grid[y][x][:h] - grid[yh][xh][:h]) < 2 }
+  
+      return depth if steps.map { |x, y| grid[y][x][:char] }.include? target
+  
+      next_heads += steps
+    end
+  
+    find_next_steps(grid, next_heads.uniq, target, polarity, depth + 1)
+  end
+  
 
   def build_heightmap(data)
     data.map(&:chars)
