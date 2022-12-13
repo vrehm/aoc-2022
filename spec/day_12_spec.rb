@@ -1,3 +1,5 @@
+require "ostruct"
+
 RSpec.describe Day12 do
   subject { day.solve(part: part) }
 
@@ -6,6 +8,16 @@ RSpec.describe Day12 do
 
   context "part one" do
     let(:part) { 1 }
+    let(:test_matrix) {
+      [
+      [OpenStruct.new({value: "a"}), OpenStruct.new({value: "a"}), OpenStruct.new({value: "b"}), OpenStruct.new({value: "q"}), OpenStruct.new({value: "p"}), OpenStruct.new({value: "o"}), OpenStruct.new({value: "n"}), OpenStruct.new({value: "m"})],
+      [OpenStruct.new({value: "a"}), OpenStruct.new({value: "b"}), OpenStruct.new({value: "c"}), OpenStruct.new({value: "r"}), OpenStruct.new({value: "y"}), OpenStruct.new({value: "x"}), OpenStruct.new({value: "x"}), OpenStruct.new({value: "l"})],
+      [OpenStruct.new({value: "a"}), OpenStruct.new({value: "c"}), OpenStruct.new({value: "c"}), OpenStruct.new({value: "s"}), OpenStruct.new({value: "z"}), OpenStruct.new({value: "z"}), OpenStruct.new({value: "x"}), OpenStruct.new({value: "k"})],
+      [OpenStruct.new({value: "a"}), OpenStruct.new({value: "c"}), OpenStruct.new({value: "c"}), OpenStruct.new({value: "t"}), OpenStruct.new({value: "u"}), OpenStruct.new({value: "v"}), OpenStruct.new({value: "w"}), OpenStruct.new({value: "j"})],
+      [OpenStruct.new({value: "a"}), OpenStruct.new({value: "b"}), OpenStruct.new({value: "d"}), OpenStruct.new({value: "e"}), OpenStruct.new({value: "f"}), OpenStruct.new({value: "g"}), OpenStruct.new({value: "h"}), OpenStruct.new({value: "i"})]
+    ]
+  }
+
     it { is_expected.to eq(31) }
 
     it "builds the heightmap like a 2D grid" do
@@ -45,52 +57,28 @@ RSpec.describe Day12 do
     end
 
     it "find orthogonal neighbors of S" do
-      grid = [
-        ["S", "a", "b", "q", "p", "o", "n", "m"],
-        ["a", "b", "c", "r", "y", "x", "x", "l"],
-        ["a", "c", "c", "s", "z", "E", "x", "k"],
-        ["a", "c", "c", "t", "u", "v", "w", "j"],
-        ["a", "b", "d", "e", "f", "g", "h", "i"]
-      ]
+      grid = test_matrix
       current_cell = [0, 0]
       expected = [[0, 1], [1, 0]]
       expect(day.orthogonal_neighbors(grid, current_cell)).to eq(expected)
     end
 
     it "find orthogonal neighbors of E" do
-      grid = [
-        ["S", "a", "b", "q", "p", "o", "n", "m"],
-        ["a", "b", "c", "r", "y", "x", "x", "l"],
-        ["a", "c", "c", "s", "z", "E", "x", "k"],
-        ["a", "c", "c", "t", "u", "v", "w", "j"],
-        ["a", "b", "d", "e", "f", "g", "h", "i"]
-      ]
+      grid = test_matrix
       current_cell = [5, 2]
       expected = [[4, 2], [5, 3], [6, 2], [5, 1]]
       expect(day.orthogonal_neighbors(grid, current_cell)).to eq(expected)
     end
 
     it "find orthogonal neighbors of b (1, 1)" do
-      grid = [
-        ["S", "a", "b", "q", "p", "o", "n", "m"],
-        ["a", "b", "c", "r", "y", "x", "x", "l"],
-        ["a", "c", "c", "s", "z", "E", "x", "k"],
-        ["a", "c", "c", "t", "u", "v", "w", "j"],
-        ["a", "b", "d", "e", "f", "g", "h", "i"]
-      ]
+      grid = test_matrix
       current_cell = [1, 1]
       expected = [[0, 1], [1, 2], [2, 1], [1, 0]]
       expect(day.orthogonal_neighbors(grid, current_cell)).to eq(expected)
     end
 
     it "find orthogonal neighbors of c (2, 1)" do
-      grid = [
-        ["S", "a", "b", "q", "p", "o", "n", "m"],
-        ["a", "b", "c", "r", "y", "x", "x", "l"],
-        ["a", "c", "c", "s", "z", "E", "x", "k"],
-        ["a", "c", "c", "t", "u", "v", "w", "j"],
-        ["a", "b", "d", "e", "f", "g", "h", "i"]
-      ]
+      grid = test_matrix
       current_cell = [2, 1]
       expected = [[1, 1], [2, 2], [2, 0]]
       expect(day.orthogonal_neighbors(grid, current_cell)).to eq(expected)

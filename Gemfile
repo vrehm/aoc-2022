@@ -7,3 +7,4 @@ source "https://rubygems.org"
 gem "rspec", "~> 3.12"
 
 gem "zeitwerk", "~> 2.6"
+gem "gastar"
