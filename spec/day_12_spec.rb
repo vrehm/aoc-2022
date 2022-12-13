@@ -97,8 +97,8 @@ RSpec.describe Day12 do
     end
   end
 
-  xcontext "part two" do
+  context "part two" do
     let(:part) { 2 }
-    it { is_expected.to eq(286) }
+    it { is_expected.to eq(29) }
   end
 end

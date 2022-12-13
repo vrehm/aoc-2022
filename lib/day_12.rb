@@ -2,19 +2,21 @@ class Day12 < AOC
   def solve(part:)
     input = read_input_file
     
-    [
-      { from: 'S', target: 'E', polarity: 1 },
-      { from: 'E', target: 'a', polarity: -1 }
-    ].each do |part|
-      y = input.find_index { |i| i.include? part[:from] }
-      x = input[y].index(part[:from])
-    
-      grid = input.map do |i|
-        i.chars.map { |j| { char: j, h: j.tr('SE', 'az').ord, seen: false } }
-      end
-    
-      puts find_next_steps(grid, [[x, y]], part[:target], part[:polarity])
+    case part
+    when 1
+      part = { from: 'S', target: 'E', polarity: 1 }
+    when 2
+      part = { from: 'E', target: 'a', polarity: -1 }
     end
+    
+    y = input.find_index { |i| i.include? part[:from] }
+    x = input[y].index(part[:from])
+  
+    grid = input.map do |i|
+      i.chars.map { |j| { char: j, h: j.tr('SE', 'az').ord, seen: false } }
+    end
+  
+    find_next_steps(grid, [[x, y]], part[:target], part[:polarity])
     # case part
     # when 1
     #   heightmap = build_heightmap(read_input_file)
@@ -47,7 +49,7 @@ class Day12 < AOC
   
       next_heads += steps
     end
-  
+
     find_next_steps(grid, next_heads.uniq, target, polarity, depth + 1)
   end
   
